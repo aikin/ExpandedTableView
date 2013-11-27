@@ -20,18 +20,29 @@
 
 @synthesize allSectionsAndItems = _allSectionsAndItems, isExpanding = _isExpanding;
 
-- (id)initWithFrame:(CGRect)frame
+
+- (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
     
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:frame style:UITableViewStylePlain];
     if (self) {
+        
         self.delegate = self;
         self.dataSource = self;
         self.allSectionsAndItems = [[NSMutableArray alloc] init];
         self.isExpanding = [[NSMutableArray alloc] init];
+        
     }
     
     return self;
+    
+}
+
+
+- (id)initWithFrame:(CGRect)frame
+{
+    
+    return [self initWithFrame:frame style:UITableViewStylePlain];
     
 }
 
@@ -70,25 +81,21 @@
         return 1;
     else
         return [[self.allSectionsAndItems objectAtIndex:section] count];
-        
+    
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    static NSString *sectionsCellIdentifier = @"sectonCellIdentifier";
+    static NSString *sectionsCellIdentifier = @"sectionCellIdentifier";
     static NSString *itemsCellIdentifier = @"itemsCellIdentifier";
-    NSString *cellIdentifier = indexPath.row == 0 ? sectionsCellIdentifier :itemsCellIdentifier;
+    NSString *cellIdentifier = indexPath.row == 0 ? sectionsCellIdentifier : itemsCellIdentifier;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        
-        if (indexPath.row == 0)
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:sectionsCellIdentifier];
-        else
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:itemsCellIdentifier];
-        
-    }
+    if (cell == nil && indexPath.row == 0)
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:sectionsCellIdentifier];
+    else
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:itemsCellIdentifier];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [self changeArrowDirection:cell cellForRowAtIndexpath:indexPath];
@@ -99,13 +106,11 @@
 }
 
 
+#pragma mark - UITableViewDelegate Methods
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if([[self.isExpanding objectAtIndex:indexPath.section] boolValue])
-        [self.isExpanding setObject:[NSNumber numberWithBool:NO] atIndexedSubscript:indexPath.section];
-    else
-        [self.isExpanding setObject:[NSNumber numberWithBool:YES] atIndexedSubscript:indexPath.section];
+    [self convertExpandingStatus:indexPath];
     [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
     [self.expandedTableViewDelegate didSelectItemsAtIndexPath:indexPath];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -117,10 +122,28 @@
 - (void)changeArrowDirection:(UITableViewCell *)cell cellForRowAtIndexpath:(NSIndexPath *)indexPath
 {
     
-    if ([[self.isExpanding objectAtIndex:indexPath.section] boolValue] && indexPath.row == 0)
-        cell.imageView.image = [UIImage imageNamed:@"UPArrow.png"];
-    else if (indexPath.row == 0)
-        cell.imageView.image = [UIImage imageNamed:@"DownArrow.png"];
+    if (indexPath.row == 0) {
+        
+        NSArray *imagesName = [NSArray arrayWithObjects:@"DownArrow.png", @"UPArrow.png", nil];
+        NSUInteger index = [[self.isExpanding objectAtIndex:indexPath.section] integerValue];
+        cell.imageView.image = [UIImage imageNamed:[imagesName objectAtIndex:index]];
+        
+    }
+//    if ([[self.isExpanding objectAtIndex:indexPath.section] boolValue] && indexPath.row == 0)
+//        cell.imageView.image = [UIImage imageNamed:@"UPArrow.png"];
+//    else if (indexPath.row == 0)
+//        cell.imageView.image = [UIImage imageNamed:@"DownArrow.png"];
+    
+}
+
+
+- (void)convertExpandingStatus:(NSIndexPath *)indexPath
+{
+    
+    if([[self.isExpanding objectAtIndex:indexPath.section] boolValue])
+        [self.isExpanding setObject:[NSNumber numberWithBool:NO] atIndexedSubscript:indexPath.section];
+    else
+        [self.isExpanding setObject:[NSNumber numberWithBool:YES] atIndexedSubscript:indexPath.section];
     
 }
 

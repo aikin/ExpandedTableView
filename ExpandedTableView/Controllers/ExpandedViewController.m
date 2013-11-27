@@ -30,9 +30,11 @@
 {
     
     [super viewDidLoad];
-    expandedTableView = [[ExpandedTableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    expandedTableView = [[ExpandedTableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,
+                                                                                self.view.frame.size.height)];
+    
 	expandedTableView.expandedTableViewDelegate = self;
-    NSArray *items = [NSArray arrayWithObjects:@"2", @"3", @"4", @"5", nil];
+    NSArray *items = [NSArray arrayWithObjects:@"2", @"3", @"4", @"5", @"6", @"7", @"8", nil];
     NSArray *secondItems = [NSArray arrayWithObjects:@"2", @"3", @"4", nil];
     [expandedTableView setSectionTitle:@"First" itemsForSection:items];
     [expandedTableView setSectionTitle:@"Second" itemsForSection:secondItems];
@@ -51,6 +53,7 @@
 - (void)didSelectItemsAtIndexPath:(NSIndexPath *)indexpath
 {
     
+    NSLog(@"section = %i , 第 %i item", indexpath.section, indexpath.row);
     
     
 }
