@@ -10,7 +10,7 @@
 
 @interface ExpandedTableView () <UITableViewDataSource, UITableViewDelegate>
 
-@property (strong, nonatomic) NSMutableArray *allSectionAndItems;
+@property (strong, nonatomic) NSMutableArray *allSectionsAndItems;
 @property (strong, nonatomic) NSMutableArray *isExpanding;
 
 @end
@@ -18,7 +18,7 @@
 
 @implementation ExpandedTableView
 
-@synthesize allSectionAndItems = _allSectionAndItems, isExpanding = _isExpanding;
+@synthesize allSectionsAndItems = _allSectionsAndItems, isExpanding = _isExpanding;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -27,7 +27,7 @@
     if (self) {
         self.delegate = self;
         self.dataSource = self;
-        self.allSectionAndItems = [[NSMutableArray alloc] init];
+        self.allSectionsAndItems = [[NSMutableArray alloc] init];
         self.isExpanding = [[NSMutableArray alloc] init];
     }
     
@@ -46,7 +46,7 @@
         [sectionAndItems addObject: item];
     }
     
-    [self.allSectionAndItems addObject:sectionAndItems];
+    [self.allSectionsAndItems addObject:sectionAndItems];
     [self.isExpanding addObject:[NSNumber numberWithBool:NO]];
     [self reloadData];
     
@@ -58,7 +58,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return [self.allSectionAndItems count];
+    return [self.allSectionsAndItems count];
     
 }
 
@@ -69,7 +69,7 @@
     if (![[self.isExpanding objectAtIndex:section] boolValue])
         return 1;
     else
-        return [[self.allSectionAndItems objectAtIndex:section] count];
+        return [[self.allSectionsAndItems objectAtIndex:section] count];
         
 }
 
@@ -92,7 +92,7 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [self changeArrowDirection:cell cellForRowAtIndexpath:indexPath];
-    NSMutableArray *indexSection = [self.allSectionAndItems objectAtIndex:indexPath.section];
+    NSMutableArray *indexSection = [self.allSectionsAndItems objectAtIndex:indexPath.section];
     cell.textLabel.text = [indexSection objectAtIndex:indexPath.row];
     return cell;
     
@@ -118,9 +118,9 @@
 {
     
     if ([[self.isExpanding objectAtIndex:indexPath.section] boolValue] && indexPath.row == 0)
-        cell.imageView.image = [UIImage imageNamed:@"UPAccessory.png"];
+        cell.imageView.image = [UIImage imageNamed:@"UPArrow.png"];
     else if (indexPath.row == 0)
-        cell.imageView.image = [UIImage imageNamed:@"DownAccessory.png"];
+        cell.imageView.image = [UIImage imageNamed:@"DownArrow.png"];
     
 }
 
