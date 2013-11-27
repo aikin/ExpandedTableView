@@ -140,10 +140,12 @@
 - (void)convertExpandingStatus:(NSIndexPath *)indexPath
 {
     
-    if([[self.isExpanding objectAtIndex:indexPath.section] boolValue])
-        [self.isExpanding setObject:[NSNumber numberWithBool:NO] atIndexedSubscript:indexPath.section];
-    else
-        [self.isExpanding setObject:[NSNumber numberWithBool:YES] atIndexedSubscript:indexPath.section];
+    BOOL isExpanded = [[self.isExpanding objectAtIndex:indexPath.section] boolValue] == NO ? YES : NO;
+    [self.isExpanding setObject:[NSNumber numberWithBool:isExpanded] atIndexedSubscript:indexPath.section];
+//    if([[self.isExpanding objectAtIndex:indexPath.section] boolValue])
+//        [self.isExpanding setObject:[NSNumber numberWithBool:NO] atIndexedSubscript:indexPath.section];
+//    else
+//        [self.isExpanding setObject:[NSNumber numberWithBool:YES] atIndexedSubscript:indexPath.section];
     
 }
 
