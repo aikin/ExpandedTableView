@@ -93,9 +93,11 @@
     NSString *cellIdentifier = indexPath.row == 0 ? sectionsCellIdentifier : itemsCellIdentifier;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil && indexPath.row == 0)
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:sectionsCellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                      reuseIdentifier:sectionsCellIdentifier];
     else
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:itemsCellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                      reuseIdentifier:itemsCellIdentifier];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [self changeArrowDirection:cell cellForRowAtIndexpath:indexPath];
@@ -111,7 +113,8 @@
 {
     
     [self convertExpandingStatus:indexPath];
-    [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+    [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section]
+             withRowAnimation:UITableViewRowAnimationFade];
     [self.expandedTableViewDelegate didSelectItemsAtIndexPath:indexPath];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
@@ -129,10 +132,6 @@
         cell.imageView.image = [UIImage imageNamed:[imagesName objectAtIndex:index]];
         
     }
-//    if ([[self.isExpanding objectAtIndex:indexPath.section] boolValue] && indexPath.row == 0)
-//        cell.imageView.image = [UIImage imageNamed:@"UPArrow.png"];
-//    else if (indexPath.row == 0)
-//        cell.imageView.image = [UIImage imageNamed:@"DownArrow.png"];
     
 }
 
@@ -142,10 +141,6 @@
     
     BOOL isExpanded = [[self.isExpanding objectAtIndex:indexPath.section] boolValue] == NO ? YES : NO;
     [self.isExpanding setObject:[NSNumber numberWithBool:isExpanded] atIndexedSubscript:indexPath.section];
-//    if([[self.isExpanding objectAtIndex:indexPath.section] boolValue])
-//        [self.isExpanding setObject:[NSNumber numberWithBool:NO] atIndexedSubscript:indexPath.section];
-//    else
-//        [self.isExpanding setObject:[NSNumber numberWithBool:YES] atIndexedSubscript:indexPath.section];
     
 }
 

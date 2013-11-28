@@ -53,7 +53,7 @@
 - (void)didSelectItemsAtIndexPath:(NSIndexPath *)indexpath
 {
     
-    NSLog(@"section = %i , 第 %i item", indexpath.section, indexpath.row);
+//    NSLog(@"section = %i , 第 %i item", indexpath.section, indexpath.row);
     
     
 }
